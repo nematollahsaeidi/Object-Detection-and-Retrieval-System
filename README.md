@@ -1,6 +1,6 @@
 # Object Detection and Retrieval System
 
-This repository contains a Flask-based web application designed for detecting objects in images and retrieving visually similar images from a dataset using advanced deep learning and computer vision techniques.
+This repository contains a Flask-based web application designed for detecting objects in images and retrieving visually similar images from a dataset using advanced deep learning and computer vision techniques. This project was implemented in 2020-2021.
 
 ## Features
 
