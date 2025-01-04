@@ -29,8 +29,8 @@ This repository contains a Flask-based web application designed for detecting ob
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/object-detection-retrieval.git
-   cd object-detection-retrieval
+   git clone https://github.com/nematollahsaeidi/Object-Detection-and-Retrieval-System.git
+   cd Object-Detection-and-Retrieval-System
    ```
 
 2. Install dependencies:
