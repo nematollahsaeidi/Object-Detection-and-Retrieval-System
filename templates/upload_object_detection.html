@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Web Application</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<style>
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 5px;
+padding: 5px 0;
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+
+h2 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}
+
+table.center {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+body {
+margin: 0;
+padding: 0;}
+
+form {
+width: 300px;
+margin: 0 auto;}
+
+.wrapper {
+  margin-right: auto; /* 1 */
+  margin-left:  auto; /* 1 */
+
+  max-width: 960px; /* 2 */
+
+  padding-right: 10px; /* 3 */
+  padding-left:  10px; /* 3 */
+}
+
+
+</style>
+</head>
+
+<body>
+
+
+
+<h2>Select an image to upload and display</h2>
+<p>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul class=flashes>
+		{% for message in messages %}
+		  <li><p>{{ message }}</p></li>
+		{% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
+</p>
+
+
+
+<form method="post" action="/" enctype="multipart/form-data">
+	<p><input type="file" name="file" autocomplete="off" required></p>
+	<p><input type="submit" value="Submit"></p>
+  <h4>Dominant</h4>
+    <input type="checkbox" id="color" name="dominant" value="color">
+    <label for="color">Color</label><br>
+    <input type="checkbox" id="texture" name="dominant" value="texture">
+    <label for="texture">Texture</label><br>
+<!--    <input type="checkbox" id="none" name="dominant" value="none">-->
+<!--    <label for="none">None</label><br>-->
+  <h4>Distance Algorithm</h4>
+    <input type="radio" id="L2" name="distance" value="L2">
+    <label for="L2">L2</label><br>
+    <input type="radio" id="HNSW" name="distance" value="HNSW">
+    <label for="HNSW">HNSW</label><br>
+</form>
+
+
+
+{% if filename %}
+	<div>
+		<img src="{{ url_for('display_image', filename=filename) }}" width="250" height="250">
+	</div>
+{% endif %}
+
+
+
+
+
+
+
+{% if image_detect %}
+<div class="wrapper" style="width:500px; height:500px;position:relative" >
+	<img src="static/uploads/{{ filename }}" alt="Workplace" style="width:100%; height:100%;position:relative">
+	{% for i in image_detect['boxes'] %}
+		<div class="tooltip" id={{loop.index-1}} style="width:{{i[2]}}px; height:{{i[3]}}px;border:2px solid #FF4D4D;border-style:dashed; border-radius: 10px; position:absolute; top:{{i[1]}}px; left:{{i[0]}}px;"
+			 onclick=myFunction(this.id);>
+			<span class="tooltiptext">{{ image_detect['class_ids'][loop.index-1] }}</span>
+		</div>
+	{% endfor %}
+</div>
+{% endif %}
+
+<script type="text/javascript">
+function myFunction(id) {
+	var form = document.createElement('form');
+	form.method = "post";
+	form.action = "/";
+	var hiddenField = document.createElement('input');
+	hiddenField.type = 'hidden';
+	hiddenField.name = 'id';
+	hiddenField.value = id;
+	hiddenField.id = 'id';
+	form.appendChild(hiddenField);
+	document.body.appendChild(form);
+	form.submit();
+}
+</script>
+
+
+
+
+{% if info %}
+	<table class="center">
+		<tbody>
+		<tr>
+		{% for url in info[models[1]] %}
+			<td>
+<!--				<img src="crawler/preprocessing_crawler_digistyle/{{ url }}" width="250" height="250">-->
+				<img src="{{ url_for('display_images', filename=url) }}" width="250" height="250">
+			</td>
+			{% if loop.index%5==0 %}
+				</tr><tr>
+			{% endif %}
+		{% endfor %}
+		</tr>
+		</tbody>
+	</table>
+<h2> other model </h2>
+	<table class="center">
+		<tbody>
+		<tr>
+		{% for url in info[models[0]] %}
+			<td>
+<!--				<img src="crawler/preprocessing_crawler_digistyle/{{ url }}" width="250" height="250">-->
+				<img src="{{ url_for('display_images', filename=url) }}" width="250" height="250">
+			</td>
+			{% if loop.index%5==0 %}
+				</tr><tr>
+			{% endif %}
+		{% endfor %}
+		</tr>
+		</tbody>
+	</table>
+{% endif %}
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!--<script type="text/javascript">-->
+<!--function myFunction(id) {-->
+<!--	var width = document.getElementById(id).style.width;-->
+<!--	// var height = document.getElementById(id).style.height;-->
+<!--	// var top = document.getElementById(id).style.top;-->
+<!--	// var left = document.getElementById(id).style.left;-->
+<!--	document.body.innerHTML += '<form id="dynForm" action="/" enctype="multipart/form-data" ' +-->
+<!--		  'method="post"><input type="text" name="id" id="id" value="${id}"></form>';-->
+<!--	document.getElementById("dynForm").submit();-->
+<!--	// x.style.color = "red";-->
+<!--	alert(id);-->
+<!--	// height.submit();-->
+<!--}-->
+<!--</script>-->
