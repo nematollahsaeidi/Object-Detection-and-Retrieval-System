@@ -1,0 +1,10 @@
+The models of
+
+dominant_color
+inception_resnet_v2
+mobile_net_v2
+nas_net_large
+nas_net_large
+xception
+
+are placed separately in different folders.
